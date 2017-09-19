@@ -62,6 +62,8 @@ def getDbConnection(uri=None, replicaSet=None, autoRetry=True, quiet=False, **kw
     """
     global _dbClients
 
+    # Ideally this would be cached using dogpile, however caching is disabled by default
+    # and multiple instances of MongoClient shouldn't be created.
     origKey = (uri, replicaSet)
     if origKey in _dbClients:
         return _dbClients[origKey]
