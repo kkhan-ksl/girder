@@ -29,6 +29,11 @@ geojson==1.3.2
 # hdfs_assetstore
 snakebite==2.9.0 ; python_version < '3.0'
 
+# item_tasks
+ctk-cli==1.4
+-e git+https://github.com/girder/girder_worker_utils.git#egg=girder-worker-utils
+-e git+https://github.com/girder/girder_worker.git#egg=girder-worker
+
 # metadata_extractor
 hachoir-core==1.3.3     ; python_version < '3.0'
 hachoir-metadata==1.3.3 ; python_version < '3.0'

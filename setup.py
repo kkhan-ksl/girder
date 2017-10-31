@@ -79,7 +79,7 @@ extras_reqs = {
     'celery_jobs': ['celery'],
     'dicom_viewer': ['pydicom'],
     'geospatial': ['geojson'],
-    'item_tasks': ['ctk-cli'],
+    'item_tasks': ['ctk-cli', 'girder-worker', 'girder-worker-utils'],
     'ldap': ['pyldap'],
     'thumbnails': ['Pillow', 'pydicom', 'numpy'],
     'worker': ['celery>=4.0.0']
