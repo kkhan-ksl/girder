@@ -13,7 +13,8 @@ import SearchFieldWidget from 'girder/views/widgets/SearchFieldWidget';
 import 'girder/stylesheets/body/searchResultsList.styl';
 
 /**
- * This view display all the search results per each type
+ * This view display all the search results by instanciating a subview
+ * per each type found.
  */
 var SearchResultsView = View.extend({
     events: {
@@ -23,37 +24,28 @@ var SearchResultsView = View.extend({
     },
 
     initialize: function (settings) {
-        this.results = [];
-        this.initResults = {};
-        this._pageLimit = 2;
         this._query = settings.query;
         this._mode = settings.mode;
-        this._types = settings.types || ['collection', 'group', 'user', 'folder', 'item'];
+        // Give the display order of each type on the result view
+        this._types = settings.types || ['collection', 'folder', 'item', 'group', 'user'];
+        this._subviews = {};
+        this._initResults = {};
 
-        this.subviews = {};
+        this.pageLimit = 10;
 
-        let promiseTmp = null;
-        const promises = [];
-
-        _.each(this._types, (type) => {
-            promiseTmp = restRequest({
-                url: 'resource/search',
-                data: {
-                    q: this._query,
-                    mode: this._mode,
-                    types: JSON.stringify(_.intersection(
-                        [type],
-                        SearchFieldWidget.getModeTypes(this._mode))
-                    ),
-                    limit: this._pageLimit
-                }
-            }).done(_.bind(function (results) {
-                this.initResults[type] = this._parseResults(results);
-            }, this));
-            promises.push(promiseTmp);
-        });
-
-        Promise.all(promises).then(_.bind(function () {
+        restRequest({
+            url: 'resource/search',
+            data: {
+                q: this._query,
+                mode: this._mode,
+                types: JSON.stringify(_.intersection(
+                    this._types,
+                    SearchFieldWidget.getModeTypes(this._mode))
+                ),
+                limit: this.pageLimit
+            }
+        }).done(_.bind(function (results) {
+            this._initResults = results;
             this.render();
         }, this));
     },
@@ -71,43 +63,36 @@ var SearchResultsView = View.extend({
     },
 
     _getIcon: function (type) {
-        let icon;
-        if (type === 'user') {
-            icon = 'user';
-        } else if (type === 'group') {
-            icon = 'users';
-        } else if (type === 'collection') {
-            icon = 'sitemap';
-        } else if (type === 'folder') {
-            icon = 'folder';
-        } else if (type === 'item') {
-            icon = 'doc-text-inv';
-        }
-        return icon;
+        const icons = {
+            'user': 'user',
+            'group': 'users',
+            'collection': 'sitemap',
+            'folder': 'folder',
+            'item': 'doc-text-inv'
+        };
+        return icons[type];
     },
 
     render: function () {
-        // TODO: Fix the order of display --> Collection, folder, item, user, group ?
         this.$el.html(SearchResultsTemplate({
-            results: this.initResults || null,
             query: this._query || null,
-            length: this._calculateLength(this.initResults) || 0
+            length: this._calculateLength(this._initResults) || 0
         }));
 
         _.each(this._types, (type) => {
-            if (this.initResults[type].length) {
-                this.subviews[type] = new SearchResultsTypeView({
+            if (this._initResults[type].length) {
+                this._subviews[type] = new SearchResultsTypeView({
                     parentView: this,
                     name: `${type}ResultsView` || null,
                     type: type || '',
                     icon: this._getIcon(type) || '',
-                    limit: this._pageLimit || 0,
+                    limit: this.pageLimit || 0,
                     query: this._query || null,
                     mode: this._mode || null,
-                    initResults: this.initResults[type] || []
+                    initResults: this._initResults[type] || []
                 });
-                this.subviews[type].setElement(this.$(`#${type}Subview`));
-                this.subviews[type].render();
+                this._subviews[type].render();
+                this._subviews[type].$el.appendTo(this.$('.g-search-results-container'));
             }
         });
 
@@ -121,37 +106,47 @@ var SearchResultsView = View.extend({
     }
 });
 
+/**
+ * This subview display all the search results for one type.
+ * It also contain a pagination widget that provide a consistent widget
+ * for iterating amongst pages of a list of search results.
+ */
 var SearchResultsTypeView = View.extend({
 
-    initialize: function (settings) {
-        this.name = settings.name;
-        this.icon = settings.icon;
-        this.type = settings.type;
-        this.results = settings.initResults;
-        this.pageLimit = settings.limit;
-        this.query = settings.query;
-        this.mode = settings.mode;
+    className: 'g-search-results-type-container',
 
-        this.paginateWidget = new SearchPaginateWidget({
+    initialize: function (settings) {
+        this._name = settings.name;
+        this._icon = settings.icon || '';
+        this._type = settings.type || null;
+        this._initResults = settings.initResults || null;
+        this._pageLimit = settings.limit;
+        this._query = settings.query;
+        this._mode = settings.mode;
+
+        this._paginateWidget = new SearchPaginateWidget({
             parentView: this,
-            type: this.type,
-            query: this.query,
-            mode: this.mode,
-            limit: this.pageLimit
+            type: this._type,
+            query: this._query,
+            mode: this._mode,
+            limit: this._pageLimit
         }).on('g:changed', function () {
-            this.results = this.paginateWidget.results;
+            this._results = this._paginateWidget.results;
             this.render();
         }, this);
+
+        this._results = this._initResults;
     },
 
     render: function () {
         this.$el.html(SearchResultsTypeTemplate({
-            results: this.results || null,
-            type: this.type || null,
-            icon: this.icon || ''
+            results: this._results,
+            type: this._type,
+            icon: this._icon
         }));
 
-        this.paginateWidget.setElement(this.$(`#${this.type}Paginate`)).render();
+        this.$('.g-search-results-type').css('min-height', `${this._initResults.length*40}px`);
+        this._paginateWidget.setElement(this.$(`#${this._type}Paginate`)).render();
 
         return this;
     }
