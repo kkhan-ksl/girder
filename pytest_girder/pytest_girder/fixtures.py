@@ -2,15 +2,17 @@ import cherrypy
 import hashlib
 import mock
 import mongomock
+import os
 import pytest
+import shutil
 
-from .utils import request
+from .utils import MockSmtpReceiver, request as restRequest
 
 
 @pytest.fixture(autouse=True)
 def bcrypt():
     """
-    Mock out bcrypt password hashing to avoid unecessary testing bottlenecks.
+    Mock out bcrypt password hashing to avoid unnecessary testing bottlenecks.
     """
     with mock.patch('bcrypt.hashpw') as hashpw:
         hashpw.side_effect = lambda x, y: x
@@ -46,7 +48,7 @@ def db(request):
     # Force getDbConnection from models to return our connection
     _dbClients[(None, None)] = connection
 
-    if dropDb == 'pre':
+    if dropDb in ('pre', 'both'):
         connection.drop_database(dbName)
 
     for model in _modelSingletons:
@@ -54,7 +56,7 @@ def db(request):
 
     yield connection
 
-    if dropDb == 'post':
+    if dropDb in ('post', 'both'):
         connection.drop_database(dbName)
 
     connection.close()
@@ -65,7 +67,7 @@ def db(request):
 
 
 @pytest.fixture
-def server(db):
+def server(db, request):
     """
     Require a CherryPy embedded server.
 
@@ -77,16 +79,30 @@ def server(db):
     # effect on import. We have to hack around this by creating a unique event daemon
     # each time we startup the server and assigning it to the global.
     import girder.events
+    from girder.constants import ROOT_DIR
+    from girder.utility import plugin_utilities
     from girder.utility.server import setup as setupServer
+
+    oldPluginDir = plugin_utilities.getPluginDir
 
     girder.events.daemon = girder.events.AsyncEventsThread()
 
-    server = setupServer(test=True)
-    server.request = request
+    if request.node.get_marker('testPlugins'):
+        # Load plugins from the test path
+        path = os.path.join(ROOT_DIR, 'tests', 'test_plugins')
+
+        plugin_utilities.getPluginDir = mock.Mock(return_value=path)
+        plugins = request.node.get_marker('testPlugins').args[0]
+    else:
+        plugins = []
+
+    server = setupServer(test=True, plugins=plugins)
+    server.request = restRequest
 
     cherrypy.server.unsubscribe()
     cherrypy.config.update({'environment': 'embedded',
-                            'log.screen': False})
+                            'log.screen': False,
+                            'request.throw_errors': True})
     cherrypy.engine.start()
 
     yield server
@@ -96,6 +112,31 @@ def server(db):
     cherrypy.engine.stop()
     cherrypy.engine.exit()
     cherrypy.tree.apps = {}
+    plugin_utilities.getPluginDir = oldPluginDir
+
+
+@pytest.fixture
+def smtp(db, server):
+    """
+    Provides a mock SMTP server for testing.
+    """
+    # TODO strictly speaking, this does not depend on the server itself, but does
+    # depend on the events daemon, which is currently managed by the server fixture.
+    # We should sort this out so that the daemon is its own fixture rather than being
+    # started/stopped via the cherrypy server lifecycle.
+    from girder.constants import SettingKey
+    from girder.models.setting import Setting
+
+    receiver = MockSmtpReceiver()
+    receiver.start()
+
+    host, port = receiver.address
+    Setting().set(SettingKey.SMTP_HOST, host)
+    Setting().set(SettingKey.SMTP_PORT, port)
+
+    yield receiver
+
+    receiver.stop()
 
 
 @pytest.fixture
@@ -129,3 +170,30 @@ def user(db, admin):
     yield u
 
     User().remove(u)
+
+
+@pytest.fixture
+def fsAssetstore(db, request):
+    """
+    Require a filesystem assetstore. Its location will be derived from the test function name.
+    """
+    from girder.constants import ROOT_DIR
+    from girder.models.assetstore import Assetstore
+
+    name = '_'.join((
+        request.node.module.__name__,
+        request.node.cls.__name__ if request.node.cls else '',
+        request.node.name))
+
+    path = os.path.join(ROOT_DIR, 'tests', 'assetstore', name)
+
+    if os.path.isdir(path):
+        shutil.rmtree(path)
+
+    yield Assetstore().createFilesystemAssetstore(name=name, root=path)
+
+    if os.path.isdir(path):
+        shutil.rmtree(path)
+
+
+__all__ = ('admin', 'bcrypt', 'db', 'fsAssetstore', 'server', 'user', 'smtp')
