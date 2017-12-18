@@ -2,19 +2,22 @@
 
 .g-header-wrapper
   display flex
+  justify-content space-between
   height $headerHeight
   vertical-align middle
   padding 0 20px
   background white
   border-bottom $border
+  box-sizing border-box
 
 .g-app-title
-  display inline
-  font-size 20px
+  font-size 30px
   font-weight 600
-  margin-right 35px
-  line-height $headerHeight
+  line-height
   cursor pointer
+  flex 0.2
+
+#g-global-nav-container
   flex 1
 
 .g-quick-search-form
@@ -27,6 +30,20 @@
 .g-current-user-wrapper
   display inline
 
-@media (max-width: 720px)
+/* Header Responsive */
+@media (max-width: $largeWidth)
+  .g-app-title
+    flex 0.5
+    margin-right 2%
+
+@media (min-width: $mediumWidth)
+  #g-app-body-container.g-default-layout
+    margin (10px + $headerHeight) 20px 10px (20px + $navWidth)
+
+@media (max-width: $mediumWidth)
+  #g-global-nav-container
+    display none
+
+@media (max-width: 510px)
   .g-app-title
     display none

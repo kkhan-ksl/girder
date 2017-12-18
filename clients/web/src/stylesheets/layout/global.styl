@@ -151,3 +151,18 @@ textarea
 
 .g-top-level-list-entry:nth-child(2)
   border-top $border
+
+/* Global nav Responsive */
+@media (min-width: $mediumWidth)
+  #g-global-nav-fade
+    display none
+
+@media (max-width: $mediumWidth)
+  #g-global-nav-fade
+    display inline-block
+    width 100%
+    position fixed
+    z-index 50
+    background white
+    top $headerHeight
+    border-bottom $border

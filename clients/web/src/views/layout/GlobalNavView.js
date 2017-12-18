@@ -10,6 +10,7 @@ import LayoutGlobalNavTemplate from 'girder/templates/layout/layoutGlobalNav.pug
 
 import 'girder/stylesheets/layout/globalNav.styl';
 
+
 /**
  * This view shows a list of global navigation links that should be
  * displayed at all times.
@@ -22,10 +23,14 @@ var LayoutGlobalNavView = View.extend({
             var link = $(event.currentTarget);
 
             router.navigate(link.attr('g-target'), {trigger: true});
+            this.deactivateAll();
 
             // Must call this after calling navigateTo, since that
             // deactivates all global nav links.
             link.parent().addClass('g-active');
+            if (this.bannerColor !== '#ffffff') {
+                link.css('color', this.bannerColor);
+            }
         }
     },
 
@@ -53,6 +58,14 @@ var LayoutGlobalNavView = View.extend({
                 target: 'groups'
             }];
         }
+        this.parentView = settings.parentView;
+        if (this.parentView.cid !== 'view1') {
+            this.bannerColor = this.parentView.bannerColor;
+            this.textColor = this.parentView._getTextColor(this.bannerColor);
+        } else {
+            this.textColor = null;
+        }
+
     },
 
     render: function () {
@@ -72,12 +85,14 @@ var LayoutGlobalNavView = View.extend({
             }
         }
         this.$el.html(LayoutGlobalNavTemplate({
-            navItems: navItems
+            navItems: navItems,
+            textColor: this.textColor
         }));
 
         if (Backbone.history.fragment) {
-            this.$('[g-target="' + Backbone.history.fragment + '"]')
-                .parent().addClass('g-active');
+            const target = this.$('[g-target="' + Backbone.history.fragment + '"]');
+            target.parent().addClass('g-active');
+            target.css('color', this.bannerColor);
         }
 
         return this;
@@ -90,10 +105,15 @@ var LayoutGlobalNavView = View.extend({
     selectForView: function (viewName) {
         this.deactivateAll();
         this.$('[g-name="' + viewName.slice(0, -4) + '"]').parent().addClass('g-active');
+        if (this.bannerColor !== '#ffffff') {
+                this.$('.g-active').children().css('color', this.bannerColor);
+        }
     },
 
     deactivateAll: function () {
-        this.$('.g-global-nav-li').removeClass('g-active');
+        var options = this.$('.g-global-nav-li')
+        options.removeClass('g-active');
+        options.children().css('color', this.textColor);
     }
 });
 

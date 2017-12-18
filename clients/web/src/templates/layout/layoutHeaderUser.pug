@@ -3,6 +3,9 @@
     a.g-user-dropdown-link(data-toggle="dropdown", data-target="#g-user-action-menu")
       | #[i.icon-user] #{user.get('login')}
       i.icon-down-open
+    a.g-user-dropdown-link-fade(data-toggle="dropdown", data-target="#g-user-action-menu")
+      | #[i.icon-user]
+      i.icon-down-open
     #g-user-action-menu.dropdown
       ul.dropdown-menu(role="menu")
         li(role="presentation")
@@ -19,7 +22,19 @@
             i.icon-logout
             | Log out
   else
-    a.g-register Register
-    .g-or-text or
-    a.g-login Log In
-      i.icon-login
+    .g-non-user
+      a.g-register Register
+      .g-or-text or
+      a.g-login Log In
+        i.icon-login
+    .g-non-user-fade
+      a.g-non-user-dropdown-link(data-toggle="dropdown", data-target="#g-non-user-action-menu")
+        i.icon-down-open
+
+      #g-non-user-action-menu.dropdown
+        ul.dropdown-menu(role="menu")
+          li(role="presentation")
+            a.g-register Register
+          li(role="presentation")
+            a.g-login Log In
+              i.icon-login
