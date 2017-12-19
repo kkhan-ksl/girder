@@ -133,6 +133,23 @@ var App = View.extend({
 
         this.globalNavView = new LayoutGlobalNavView({
             parentView: this,
+            navItems: [{
+                name: 'Home',
+                icon: 'icon-home',
+                target: ''
+            }, {
+                name: 'Collections',
+                icon: 'icon-sitemap',
+                target: 'collections'
+            }, {
+                name: 'Users',
+                icon: 'icon-user',
+                target: 'users'
+            }, {
+                name: 'Groups',
+                icon: 'icon-users',
+                target: 'groups'
+            }]
         });
 
         this.footerView = new LayoutFooterView({
