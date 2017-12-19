@@ -18,6 +18,7 @@
     .g-frontpage-subtitle
       font-size 25px
       margin-left 2px
+      border-top $border
 
   .g-frontpage-logo-container
     position relative
@@ -49,3 +50,7 @@
     border-radius 2px
     border $border
     padding 12px
+
+@media (max-width: $mediumWidth)
+  .g-frontpage-header
+    display none

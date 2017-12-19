@@ -10,9 +10,6 @@
   .g-user-dropdown-link
     display inline-block
     max-width calc(100vw - 300px)
-    overflow hidden
-    text-overflow ellipsis
-    white-space nowrap
 
     i
       margin-left 2px
@@ -58,3 +55,7 @@
 
     .g-non-user
       display none
+
+@media (max-width: $teenyWidth)
+  .g-icon-user-fade
+    display none
