@@ -9,6 +9,8 @@
 
 #g-app-body-container.g-default-layout
   min-height $minHeight
+  margin $headerHeight 0 0
+  padding 0
 
 #g-app-body-container.g-empty-layout
   margin 0
@@ -54,6 +56,6 @@
   overflow hidden
   text-overflow ellipsis
 
+@media (max-width: $mediumWidth)
   #g-app-body-container.g-default-layout
-    margin-left 0
-    padding 10px
+    margin (2 * $headerHeight) 0 0

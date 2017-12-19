@@ -1,7 +1,10 @@
 @import "../layout/layoutVars"
 
 .g-frontpage-header
-  padding 5px
+  display flex
+  justify-content center
+  background-color $secondaryBackgroundColor
+  padding ($headerHeight / 2) 0
 
   .g-frontpage-title-container
     display inline-block
@@ -9,11 +12,11 @@
 
     .g-frontpage-title
       font-weight 600
-      font-size 34px
+      font-size 40px
       color $baseColor
 
     .g-frontpage-subtitle
-      font-size 18px
+      font-size 25px
       margin-left 2px
 
   .g-frontpage-logo-container
@@ -34,14 +37,15 @@
       transform translate(-50%, -50%)
 
 .g-frontpage-body
-  padding 12px 12px 0
+  display flex
+  justify-content center
+
   margin-top 10px
-  max-width 800px
-  border-radius 2px
-  background-color $secondaryBackgroundColor
-  border $border
+
 
   .g-frontpage-paragraph
-    margin-top 0
-    margin-bottom 18px
-    font-size 14px
+    line-height 2
+    max-width 800px
+    border-radius 2px
+    border $border
+    padding 12px
