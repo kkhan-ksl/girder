@@ -1,6 +1,5 @@
 import _ from 'underscore';
 
-import LayoutGlobalNavView from 'girder/views/layout/GlobalNavView';
 import LayoutHeaderUserView from 'girder/views/layout/HeaderUserView';
 import router from 'girder/router';
 import SearchFieldWidget from 'girder/views/widgets/SearchFieldWidget';
@@ -16,7 +15,6 @@ import 'girder/stylesheets/layout/header.styl';
 var LayoutHeaderView = View.extend({
     events: {
         'click .g-app-title': function () {
-            this.globalNavView.deactivateAll();
             router.navigate('', {trigger: true});
         }
     },
@@ -29,10 +27,6 @@ var LayoutHeaderView = View.extend({
         });
         this.userViewFade = new LayoutHeaderUserView({
             parentView: this
-        });
-
-        this.globalNavView = new LayoutGlobalNavView({
-            parentView: this,
         });
 
         this.searchWidget = new SearchFieldWidget({
@@ -55,7 +49,6 @@ var LayoutHeaderView = View.extend({
             textColor: textColor
         }));
 
-        this.globalNavView.setElement(this.$('#g-global-nav-container')).render();
         this.userView.setElement(this.$('.g-current-user-wrapper')).render();
         this.searchWidget.setElement(this.$('.g-quick-search-container')).render();
 

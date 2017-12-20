@@ -189,7 +189,7 @@ var App = View.extend({
             icon: 'icon-home',
             target: ''
         });
-        this.globalNavView.setElement(this.$('#g-global-nav-fade')).render();
+        this.globalNavView.setElement(this.$('#g-global-nav')).render();
 
 
         return this;
