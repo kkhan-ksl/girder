@@ -132,24 +132,7 @@ var App = View.extend({
         });
 
         this.globalNavView = new LayoutGlobalNavView({
-            parentView: this,
-            navItems: [{
-                name: 'Home',
-                icon: 'icon-home',
-                target: ''
-            }, {
-                name: 'Collections',
-                icon: 'icon-sitemap',
-                target: 'collections'
-            }, {
-                name: 'Users',
-                icon: 'icon-user',
-                target: 'users'
-            }, {
-                name: 'Groups',
-                icon: 'icon-users',
-                target: 'groups'
-            }]
+            parentView: this
         });
 
         this.footerView = new LayoutFooterView({
@@ -200,6 +183,12 @@ var App = View.extend({
         this.headerView.setElement(this.$('#g-app-header-container')).render();
         this.footerView.setElement(this.$('#g-app-footer-container')).render();
         this.progressListView.setElement(this.$('#g-app-progress-container')).render();
+
+        this.globalNavView.defaultNavItems.unshift({
+            name: 'Home',
+            icon: 'icon-home',
+            target: ''
+        });
         this.globalNavView.setElement(this.$('#g-global-nav-fade')).render();
 
 
