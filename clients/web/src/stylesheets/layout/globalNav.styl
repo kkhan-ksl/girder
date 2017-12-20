@@ -2,7 +2,7 @@
 
 ul.g-global-nav
   display flex
-  justify-content space-evenly
+  justify-content flex-start
   align-items center
   flex-wrap wrap
   padding-left 0
@@ -38,5 +38,7 @@ ul.g-global-nav
       font-size 24px
 
 @media (max-width: $smallWidth)
+  ul.g-global-nav
+    justify-content space-evenly
   .g-nav-link > span
     display none

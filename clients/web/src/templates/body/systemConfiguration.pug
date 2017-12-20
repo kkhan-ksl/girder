@@ -3,7 +3,7 @@ form.g-settings-form(role="form")
   .g-settings-form-container
     h4 Instance Branding
     .form-group
-      label(for="g-core-brand-name") Brand Name
+      label(for="g-core-brand-name") Brand Name (less than 24 characters insure a working display)
       input#g-core-brand-name.form-control.input-sm(
           type="text", value=settings['core.brand_name'] || '',
           placeholder=`Default: ${defaults['core.brand_name'] || 'none'}`,
