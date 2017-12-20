@@ -2,10 +2,9 @@
 
 .g-header-wrapper
   display flex
-  justify-content space-between
+  justify-content flex-start
   align-items center
   height $headerHeight
-  vertical-align middle
   padding 0 20px
   background white
   border-bottom $border
@@ -14,32 +13,16 @@
 .g-app-title
   font-size 30px
   font-weight 600
-  line-height
+  line-height $headerHeight
   cursor pointer
-  flex .2
-
-#g-global-nav-container
-  flex .8
-
-.g-quick-search-form
+  flex 1
 
 .g-current-user-wrapper
   margin-left 1%
 
 /* Header Responsive */
-@media (max-width: $largeWidth)
-  .g-app-title
-    flex .5
-    margin-right 2%
-
-@media (min-width: $mediumWidth)
-  #g-app-body-container.g-default-layout
-    margin (10px + $headerHeight) 20px 10px (20px + $navWidth)
-
-@media (max-width: $mediumWidth)
-  #g-global-nav-container
-    display none
-
-@media (max-width: $removeBrandNameWidth)
+@media (max-width: $smallWidth)
   .g-app-title
     display none
+  .g-quick-search-form
+    flex 1

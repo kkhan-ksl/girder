@@ -1,27 +1,21 @@
 @import "layoutVars"
 
 ul.g-global-nav
+  display flex
+  justify-content space-evenly
+  align-items center
+  flex-wrap wrap
   padding-left 0
   margin 0
 
-  .g-nav-link
-    display inline-block
-    line-height $headerHeight
-    vertical-align middle
-    font-size 14px
-    color $lightColor
-    i
-      margin-right 5px
-      font-size 24px
-
   >li
-    display inline-block
     list-style-type none
     text-decoration none
     text-transform uppercase
     font-weight 600
-    height $headerHeight + 1 // Fix a weird shift
+    height $headerHeight
     padding 0 2%
+
 
   >li:hover:not(.g-active)
     .g-nav-link
@@ -34,17 +28,15 @@ ul.g-global-nav
     .g-nav-link
       color $baseColor
 
-@media (min-width: $mediumWidth) and (max-width: $largeWidth)
-  ul.g-global-nav
-    >li
-      padding 0 5%
+  .g-nav-link
+    line-height $headerHeight
+    font-size 14px
+    color $lightColor
 
-  .g-nav-link > span
-    display none
+    i
+      margin-right 5px
+      font-size 24px
 
 @media (max-width: $smallWidth)
-  ul.g-global-nav
-    display flex
-    justify-content space-evenly
   .g-nav-link > span
     display none

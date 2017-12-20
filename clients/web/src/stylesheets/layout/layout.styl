@@ -1,16 +1,13 @@
 @import "layoutVars"
 
 #g-app-header-container
-  position fixed
-  top 0
   width 100%
-  z-index $headerZ
-  height $headerHeight
+  max-height $headerHeight
 
 #g-app-body-container.g-default-layout
   min-height $minHeight
-  margin $headerHeight 0 0
   padding 0
+  margin 10px
 
 #g-app-body-container.g-empty-layout
   margin 0
@@ -56,7 +53,8 @@
   overflow hidden
   text-overflow ellipsis
 
-@media (max-width: $mediumWidth)
+/* Header Responsive */
+@media (max-width: $smallWidth)
   #g-app-body-container.g-default-layout
-    margin (2 * $headerHeight) 0 0
     min-height $minHeightSmallScreen
+
