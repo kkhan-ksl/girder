@@ -1,39 +1,13 @@
 @import "../layout/layoutVars"
 
-.g-user-list-entry
-  // These shouldn't be needed when the user list entry divs also have g-top-level-list-entry
-  padding 11px 14px
-  background-color white
-  border-bottom $border
-  border-left $border
-  border-right $border
-
-  .g-user-title
-    font-size $resourceTitleSize
-
-  .g-user-login
-    font-size $resourceSubtitleSize
-
-  .g-user-right-column
-    padding-left 8px
-    display inline
-    width 320px
-    font-size 14px
-    float right
-    color $lightColor
-
-  .g-user-joined-date, .g-user-space-used
-    color $normalColor
-
-// This shouldn't be needed when the user list entry divs also have g-top-level-list-entry
-.g-user-list-entry:nth-child(2)
-  border-top $border
-
 .g-user-list-header
+  display flex
+  justify-content flex-start
+  align-items center
+  flex-wrap wrap
   padding-bottom 10px
 
   .g-user-pagination
-    display inline-block
     >ul
       margin 0 13px 0 0
 
@@ -43,11 +17,10 @@
       padding 7px 12px
 
   .g-user-sort
-    display inline-block
     margin-right 12px
 
   .g-user-search-form
-    display inline
+    flex 1
     .form-group
       display inline-block
 
@@ -56,7 +29,6 @@
       margin-right 13px
 
   .g-user-count-container
-    display inline-block
     position relative
 
     i
@@ -72,3 +44,44 @@
       position absolute
       left 72%
       top 55%
+
+@media (max-width: $smallWidth)
+  .g-user-create-button >span
+    display none
+
+
+.g-user-list-entry
+  // These shouldn't be needed when the user list entry divs also have g-top-level-list-entry
+  display flex
+  justify-content flex-start
+  padding 11px 14px
+  background-color white
+  border-bottom $border
+  border-left $border
+  border-right $border
+
+  .g-user-names
+    flex 1
+    white-space nowrap
+    min-width 50%
+
+    .g-user-title
+      font-size $resourceTitleSize
+
+    .g-user-login
+      font-size $resourceSubtitleSize
+
+  .g-user-right-column
+    overflow hidden
+    white-space nowrap
+    width $rightColumnWidth
+    font-size 14px
+    padding-left 8px
+    color $lightColor
+
+  .g-user-joined-date, .g-user-space-used
+    color $normalColor
+
+// This shouldn't be needed when the user list entry divs also have g-top-level-list-entry
+.g-user-list-entry:nth-child(2)
+  border-top $border

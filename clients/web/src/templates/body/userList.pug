@@ -13,10 +13,16 @@
   if isAdmin
     button.g-user-create-button.btn.btn-sm.btn-default
       i.icon-plus-squared
-      |  Create user
+      span= "Create user"
 
 each user in users
   .g-user-list-entry
+    .g-user-names
+      .g-user-title
+        a.g-user-link(g-user-cid=user.cid)
+          b= user.name()
+      .g-user-subtitle
+        span.g-user-login  #{user.get('login')}
     .g-user-right-column
       .g-user-joined
         i.icon-clock
@@ -35,9 +41,4 @@ each user in users
         .g-user-status
           i.icon-attention-circled
           | Account pending approval
-    .g-user-title
-      a.g-user-link(g-user-cid=user.cid)
-        b= user.name()
-    .g-user-subtitle
-      span.g-user-login  #{user.get('login')}
     .g-clear-right
