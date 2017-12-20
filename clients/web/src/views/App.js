@@ -183,12 +183,6 @@ var App = View.extend({
         this.headerView.setElement(this.$('#g-app-header-container')).render();
         this.footerView.setElement(this.$('#g-app-footer-container')).render();
         this.progressListView.setElement(this.$('#g-app-progress-container')).render();
-
-        this.globalNavView.defaultNavItems.unshift({
-            name: 'Home',
-            icon: 'icon-home',
-            target: ''
-        });
         this.globalNavView.setElement(this.$('#g-global-nav')).render();
 
 

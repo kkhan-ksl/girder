@@ -83,6 +83,14 @@ var LayoutGlobalNavView = View.extend({
                     target: 'admin'
                 });
             }
+            // Provide an Home link when the brand name is not display, need to be render for being display
+            if (this.parentView.$('#g-app-header-container .g-app-title').css('display') === 'none') {
+                navItems.unshift({
+                    name: 'Home',
+                    icon: 'icon-home',
+                    target: ''
+                });
+            }
         }
         this.$el.html(LayoutGlobalNavTemplate({
             navItems: navItems,
