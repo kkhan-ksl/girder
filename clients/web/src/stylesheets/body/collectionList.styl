@@ -1,17 +1,41 @@
 @import "../layout/layoutVars"
 
+.g-collection-list-header
+  display flex
+  justify-content flex-start
+  align-items center
+  flex-wrap wrap-reverse
+  margin 10px 0
+
+  .g-collection-pagination
+    margin-right 10px
+    .pagination>li>a
+      float none
+      line-height 1.5
+      padding 7px 12px
+
+  .g-collection-search-form
+    flex 1
+    display inline
+    margin-right 15px
+
+    .form-group
+      display inline-block
+
+@media (max-width: $smallWidth)
+  .g-collection-create-button >span
+    display none
+
+
 .g-collection-list-entry
+  display flex
+  justify-content flex-start
 
   .g-collection-title
     font-size $resourceTitleSize
 
-  .g-collection-right-column
-    padding-left 8px
-    display inline
-    width 320px
-    font-size 14px
-    float right
-    color $lightColor
+  .g-top-level-list-title-container
+    flex 1
 
   .g-collection-description
     background-color white
@@ -19,25 +43,13 @@
     border-radius 3px
     border $border
 
+  .g-collection-right-column
+    overflow hidden
+    white-space: nowrap
+    padding-left 8px
+    width $rightColumnWidth
+    font-size 14px
+    color $lightColor
+
   .g-collection-created-date, .g-user-space-used
     color $normalColor
-
-.g-collection-list-header
-  padding-bottom 10px
-
-  .g-collection-pagination
-    display inline-block
-    >ul
-      margin 0 15px 0 0
-
-    .pagination>li>a
-      float none
-      line-height 1.5
-      padding 7px 12px
-
-  .g-collection-search-form
-    display inline
-    margin-right 15px
-
-    .form-group
-      display inline-block

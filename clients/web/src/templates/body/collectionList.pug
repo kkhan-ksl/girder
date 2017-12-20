@@ -7,20 +7,11 @@
   if getCurrentUser()
     button.g-collection-create-button.btn.btn-sm.btn-default
       i.icon-plus-squared
-      |  Create collection
+      span= "Create collection"
 
 each collection in collections
   .g-collection-list-entry.g-top-level-list-entry(public=(collection.get('public') ? "true" : "false"))
-    .g-collection-right-column
-      .g-collection-created
-        i.icon-clock
-        | Created on
-        span.g-collection-created-date  #{formatDate(collection.get('created'), DATE_MINUTE)}
-      if collection.has('size')
-        .g-space-used
-          i.icon-floppy
-          | Currently using
-          span.g-user-space-used  #{formatSize(collection.get('size'))}
+
     .g-list-public-status-icon
       if collection.get('public')
         i.icon-globe(title="Public collection")
@@ -36,5 +27,15 @@ each collection in collections
           a.g-show-description(state="hidden", cid=collection.cid)
             span Show description
             i.icon-down-dir
+    .g-collection-right-column
+      .g-collection-created
+        i.icon-clock
+        | Created on
+        span.g-collection-created-date  #{formatDate(collection.get('created'), DATE_MINUTE)}
+      if collection.has('size')
+        .g-space-used
+          i.icon-floppy
+          | Currently using
+          span.g-user-space-used  #{formatSize(collection.get('size'))}
     .g-clear-right
     .g-collection-description.hide(cid=collection.cid)

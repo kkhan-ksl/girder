@@ -117,14 +117,15 @@ textarea
   display inline-block
   overflow hidden
   white-space nowrap
-  width calc(100% - 380px)
+  min-width 50%
   position relative
 
   .g-text-fade
+    display none
     height 30px
     width 45px
     position absolute
-    right 0
+    right ($bodyLayoutMargin + 1)
     background linear-gradient(left, rgba(250, 250, 252, 0), rgba(250, 250, 252, 1))
 
     &[public="false"]
