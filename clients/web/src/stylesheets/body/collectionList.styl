@@ -1,32 +1,21 @@
 @import "../layout/layoutVars"
 
+/* Header */
 .g-collection-list-header
   display flex
   justify-content flex-start
   align-items center
-  flex-wrap wrap-reverse
+  flex-wrap wrap
   margin 10px 0
-
-  .g-collection-pagination
-    margin-right 10px
-    .pagination>li>a
-      float none
-      line-height 1.5
-      padding 7px 12px
 
   .g-collection-search-form
     flex 1
-    display inline
-    margin-right 15px
-
-    .form-group
-      display inline-block
 
 @media (max-width: $smallWidth)
   .g-collection-create-button >span
     display none
 
-
+/* Body */
 .g-collection-list-entry
   display flex
   justify-content flex-start
@@ -53,3 +42,13 @@
 
   .g-collection-created-date, .g-user-space-used
     color $normalColor
+
+/* Footer */ // This code is the same for Collection list, User list and Group list
+.g-collection-list-footer
+  margin 15px 0
+
+  .g-collection-pagination
+
+    .pagination>li>a
+      line-height 1.5
+      padding 7px 12px

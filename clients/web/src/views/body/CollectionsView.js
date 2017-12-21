@@ -76,7 +76,10 @@ var CollectionsView = View.extend({
             formatSize: formatSize
         }));
 
-        this.paginateWidget.setElement(this.$('.g-collection-pagination')).render();
+        const collectionList = this.paginateWidget.collection;
+        if (collectionList.hasNextPage() || collectionList.hasPreviousPage()) {
+            this.paginateWidget.setElement(this.$('.g-collection-pagination')).render();
+        }
         this.searchWidget.setElement(this.$('.g-collections-search-container')).render();
 
         if (this.create) {
