@@ -1,5 +1,6 @@
 @import "../layout/layoutVars"
 
+/* Header */
 .g-user-list-header
   display flex
   justify-content flex-start
@@ -7,22 +8,11 @@
   flex-wrap wrap
   padding-bottom 10px
 
-  .g-user-pagination
-    >ul
-      margin 0 13px 0 0
-
-    .pagination>li>a
-      float none
-      line-height 1.5
-      padding 7px 12px
-
   .g-user-sort
     margin-right 12px
 
   .g-user-search-form
     flex 1
-    .form-group
-      display inline-block
 
     input[type="text"]
       width 170px
@@ -30,6 +20,7 @@
 
   .g-user-count-container
     position relative
+    margin-right 10px
 
     i
       color #888
@@ -49,7 +40,7 @@
   .g-user-create-button >span
     display none
 
-
+/* Body */
 .g-user-list-entry
   // These shouldn't be needed when the user list entry divs also have g-top-level-list-entry
   display flex
@@ -85,3 +76,13 @@
 // This shouldn't be needed when the user list entry divs also have g-top-level-list-entry
 .g-user-list-entry:nth-child(2)
   border-top $border
+
+/* Footer */ // This code is the same for Collection list, User list and Group list
+.g-user-list-footer
+  margin 15px 0
+
+  .g-user-pagination
+
+    .pagination>li>a
+      line-height 1.5
+      padding 7px 12px
