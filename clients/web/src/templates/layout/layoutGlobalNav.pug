@@ -2,7 +2,6 @@
   ul.g-global-nav
     each navItem in navItems
       li.g-global-nav-li
-        a.g-nav-link(g-target=navItem.target, g-name=navItem.name, href=`#${navItem.target}`,
-          style=`color: ${textColor}`)
+        a.g-nav-link(g-target=navItem.target, g-name=navItem.name, href=`#${navItem.target}`)
           i(class=navItem.icon)
           span= navItem.name

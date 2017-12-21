@@ -16,6 +16,7 @@ var LayoutHeaderView = View.extend({
     events: {
         'click .g-app-title': function () {
             router.navigate('', {trigger: true});
+            this.parentView.globalNavView.deactivateAll();
         }
     },
 

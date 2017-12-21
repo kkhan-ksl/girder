@@ -28,9 +28,6 @@ var LayoutGlobalNavView = View.extend({
             // Must call this after calling navigateTo, since that
             // deactivates all global nav links.
             link.parent().addClass('g-active');
-            if (this.bannerColor !== '#ffffff') {
-                link.css('color', this.bannerColor);
-            }
         }
     },
 
@@ -59,13 +56,6 @@ var LayoutGlobalNavView = View.extend({
             }];
         }
         this.parentView = settings.parentView;
-        if (this.parentView.cid !== 'view1') {
-            this.bannerColor = this.parentView.bannerColor;
-            this.textColor = this.parentView._getTextColor(this.bannerColor);
-        } else {
-            this.textColor = null;
-        }
-
     },
 
     render: function () {
@@ -94,13 +84,11 @@ var LayoutGlobalNavView = View.extend({
         }
         this.$el.html(LayoutGlobalNavTemplate({
             navItems: navItems,
-            textColor: this.textColor
         }));
 
         if (Backbone.history.fragment) {
             const target = this.$('[g-target="' + Backbone.history.fragment + '"]');
             target.parent().addClass('g-active');
-            target.css('color', this.bannerColor);
         }
 
         return this;
@@ -113,15 +101,11 @@ var LayoutGlobalNavView = View.extend({
     selectForView: function (viewName) {
         this.deactivateAll();
         this.$('[g-name="' + viewName.slice(0, -4) + '"]').parent().addClass('g-active');
-        if (this.bannerColor !== '#ffffff') {
-                this.$('.g-active').children().css('color', this.bannerColor);
-        }
     },
 
     deactivateAll: function () {
         var options = this.$('.g-global-nav-li')
         options.removeClass('g-active');
-        options.children().css('color', this.textColor);
     }
 });
 
