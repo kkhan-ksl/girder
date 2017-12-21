@@ -35,21 +35,24 @@ function(add_eslint_test name input)
   cmake_parse_arguments(fn "${_options}" "${_args}" "${_multival_args}" ${ARGN})
 
   if(fn_ESLINT_IGNORE_FILE)
-    set(ignore_file "${fn_ESLINT_IGNORE_FILE}")
+    set(_eslint_ignore_file "--ignore-path ${fn_ESLINT_IGNORE_FILE}")
   else()
-    set(ignore_file "${PROJECT_SOURCE_DIR}/.eslintignore")
+    set(_eslint_ignore_file "")
   endif()
 
   if(fn_ESLINT_CONFIG_FILE)
-    set(config_file "${fn_ESLINT_CONFIG_FILE}")
+    set(_eslint_config_file "--config ${fn_ESLINT_CONFIG_FILE}")
   else()
-    set(config_file "${PROJECT_SOURCE_DIR}/.eslintrc.json")
+    set(_eslint_config_file "")
   endif()
 
   add_test(
     NAME "eslint_${name}"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
-    COMMAND "${ESLINT_EXECUTABLE}" --ignore-path "${ignore_file}" --config "${config_file}" "${input}"
+    COMMAND "${ESLINT_EXECUTABLE}"
+      ${_eslint_ignore_file}
+      ${_eslint_config_file}
+      "${input}"
   )
   set_property(TEST "eslint_${name}" PROPERTY LABELS girder_browser)
 endfunction()
@@ -66,7 +69,7 @@ function(add_puglint_test name path)
   add_test(
     NAME "puglint_${name}"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
-    COMMAND "${PUGLINT_EXECUTABLE}" -c "${PROJECT_SOURCE_DIR}/.pug-lintrc" "${path}"
+    COMMAND "${PUGLINT_EXECUTABLE}" "${path}"
   )
   set_property(TEST "puglint_${name}" PROPERTY LABELS girder_browser)
 endfunction()
@@ -83,7 +86,7 @@ function(add_stylint_test name path)
   add_test(
     NAME "stylint_${name}"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
-    COMMAND "${STYLINT_EXECUTABLE}" --config "${PROJECT_SOURCE_DIR}/.stylintrc" "${path}"
+    COMMAND "${STYLINT_EXECUTABLE}" "${path}"
   )
   set_property(TEST "stylint_${name}" PROPERTY LABELS girder_browser)
 endfunction()

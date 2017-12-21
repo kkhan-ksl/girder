@@ -1012,7 +1012,6 @@ put the following in your ``.eslintrc.json``:
 .. code-block:: javascript
 
     {
-        "extends": "../../.eslintrc.json",
         "globals": {
             "cats": true
         },
