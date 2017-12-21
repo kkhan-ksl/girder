@@ -23,8 +23,9 @@
             | Log out
   else
     .g-non-user
-      a.g-register Register
-      .g-or-text or
+      if registrationPolicy !== 'closed'
+        a.g-register Register
+        .g-or-text or
       a.g-login Log In
         i.icon-login
     .g-non-user-fade

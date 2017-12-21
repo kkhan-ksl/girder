@@ -23,8 +23,10 @@ var LayoutHeaderView = View.extend({
     initialize: function (settings) {
         this.brandName = settings.brandName || 'Girder';
         this.bannerColor = settings.bannerColor || '#3F3B3B';
+
         this.userView = new LayoutHeaderUserView({
-            parentView: this
+            parentView: this,
+            registrationPolicy: settings.registrationPolicy
         });
         this.userViewFade = new LayoutHeaderUserView({
             parentView: this
